@@ -5,6 +5,7 @@
 ## CSS
 
 ## JS
+1. [柯里化实现go函数](./docs/js/curryGo.md)
 
 ## ES6 + +
 

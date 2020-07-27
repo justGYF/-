@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>柯里化</title>
+</head>
+<body>
+    <script>
+        /**
+        * 实现go函数
+        * go() --- 'goo'
+        * go()()(p)() --- 'gooopo'
+        */
+
+        const go = function () {
+            const arr = []
+            // 箭头函数没有自己的arguments，故使用function
+            arguments.length > 0 ? arr.push(...arguments) : arr.push('o')
+
+            const joinStr = function () {
+                arguments.length > 0 ? arr.push(...arguments) : arr.push('o')
+                return joinStr
+            }
+
+            joinStr.toString = () => {
+                console.log('s')
+                return arr.reduce((a, b) => {
+                    return a + b
+                }, 'go')
+            }
+
+            return joinStr
+        }
+
+    </script>
+</body>
+</html>

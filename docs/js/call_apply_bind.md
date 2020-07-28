@@ -14,12 +14,12 @@
 Function.prototype.newCall = function () {
     const obj = [...arguments].shift(0) || window
 	
-	// 防止覆盖原有属性
-	const fn = Symbol();
+    // 防止覆盖原有属性
+    const fn = Symbol();
 
     obj.fn = this
 	
-	// 展开参数并执行，返回值和fn的返回值保持一致
+    // 展开参数并执行，返回值和fn的返回值保持一致
     const ret = obj.fn(...[...arguments].slice(1))
 
     delete obj.fn

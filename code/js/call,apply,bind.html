@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>call, apply, bind</title>
+</head>
+<body>
+    <script>
+        // call apply bind实现，obj值为null / undefined, undefined指向window
+        // 注意函数的返回值
+        Function.prototype.newCall = function () {
+            const obj = [...arguments].shift(0) || window
+
+            const handler = Symbol();
+            obj.handler = this
+
+            const ret = obj.handler(...[...arguments].slice(1))
+
+            delete obj.handler
+
+            return ret
+        }
+
+        // apply -- 数组中的元素都是独立的参数
+        Function.prototype.newApply = function () {
+            const obj = [...arguments].shift(0) || window
+
+            obj.fn = this
+
+            const ret = obj.fn(...[...arguments].slice(1))
+
+            delete obj.fn
+
+            return ret
+        }
+
+        Function.prototype.newBind = function () {
+            const obj = [...arguments].shift(0) || window
+
+            obj.fn = this
+
+            const ret = obj.fn([...arguments].slice(1))
+
+            delete obj.fn
+
+            return ret
+        }
+
+
+        var c = {
+            age: 1
+        }
+        function a (b, c, d) {
+            this.name = 's'
+            console.log(b, c, d)
+        }
+        function aa ([b, c, d]) {
+            this.name = 's'
+            console.log([b, c, d])
+        }
+        a.newCall()
+        aa.newCall(c, ['s', 's', 'f'])
+
+        var b = [1,2,3]
+        var c = [4,5,6]
+        aa.apply()
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pointLine</title>
+    <style>
+        #myCanvas {
+            width: 500px;
+            height: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+
+    <script>
+        window.onload = () =>{
+            const c = document.getElementById('myCanvas')
+            const ctx = c.getContext('2d')
+
+            let point1 = { left: 10, top: 10 }
+            let point2 = { left: 100, top: 100 }
+
+            ctx.beginPath()
+            // ctx.arc(10, 10, 10,0, Math.PI * 2, false)
+            // ctx.arc(100, 100, 10,0, Math.PI * 2, false)
+            ctx.moveTo(10, 10)
+            ctx.arc(100, 100, 80, Math.PI/4, Math.PI * 2, false)
+
+            // ctx.moveTo(point1.left, point1.top)
+            // ctx.lineTo(point2.left, point2.top)
+            ctx.stroke()
+        }
+
+    </script>
+</body>
+</html>

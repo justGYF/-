@@ -6,14 +6,13 @@
     <title>pointLine</title>
     <style>
         #myCanvas {
-            width: 500px;
-            height: 300px;
             margin: 0 auto;
         }
     </style>
 </head>
 <body>
-    <canvas id="myCanvas"></canvas>
+    <!-- canvas的画布高度在css中定义相当于拉伸，直接在行内定义宽高，才是真正改变画布的大小 -->
+    <canvas id="myCanvas" width="1000" height="1000"></canvas>
 
     <script>
         window.onload = () =>{
@@ -23,15 +22,37 @@
             let point1 = { left: 10, top: 10 }
             let point2 = { left: 100, top: 100 }
 
-            ctx.beginPath()
-            // ctx.arc(10, 10, 10,0, Math.PI * 2, false)
-            // ctx.arc(100, 100, 10,0, Math.PI * 2, false)
-            ctx.moveTo(10, 10)
-            ctx.arc(100, 100, 80, Math.PI/4, Math.PI * 2, false)
+            // 画布
+            ctx.beginPath();
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, 1000, 1000)
+            ctx.stroke();
+            ctx.closePath()
 
-            // ctx.moveTo(point1.left, point1.top)
-            // ctx.lineTo(point2.left, point2.top)
-            ctx.stroke()
+            // 连续绘制两个圆，会产生子路径，导致多余的线出现
+            // 一个正常单元的绘制流程应该是
+            // beginPath --> style --> arc --> fill --> stroke --> closePath 
+            
+            ctx.beginPath();
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'white';
+            ctx.arc(10, 10, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath()
+
+            ctx.beginPath();
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'white';
+            ctx.arc(100, 100, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath()
+            
+            ctx.beginPath();
+            ctx.moveTo(point1.left, point1.top)
+            ctx.lineTo(point2.left, point2.top)
+            ctx.stroke();
         }
 
     </script>

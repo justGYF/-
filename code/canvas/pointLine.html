@@ -5,17 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pointLine</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
         #myCanvas {
             margin: 0 auto;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -250px;
         }
     </style>
 </head>
 <body>
     <!-- canvas的画布高度在css中定义相当于拉伸，直接在行内定义宽高，才是真正改变画布的大小 -->
-    <canvas id="myCanvas" width="1000" height="1000"></canvas>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
 
     <script>
-        window.onload = () =>{
+        window.onload = () => {
             const c = document.getElementById('myCanvas')
             const ctx = c.getContext('2d')
 
@@ -25,7 +33,7 @@
             // 画布
             ctx.beginPath();
             ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, 1000, 1000)
+            ctx.fillRect(0, 0, 500, 500)
             ctx.stroke();
             ctx.closePath()
 
@@ -41,6 +49,14 @@
             ctx.stroke();
             ctx.closePath()
 
+            ctx.beginPath();
+            ctx.fillStyle = 'red';
+            ctx.strokeStyle = 'red';
+            ctx.fillText('ss', 10, 10)
+            ctx.strokeText('ss', 10, 10)
+            ctx.closePath()
+
+            
             ctx.beginPath();
             ctx.fillStyle = 'white';
             ctx.strokeStyle = 'white';

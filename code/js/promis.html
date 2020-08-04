@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise的使用及实现</title>
+</head>
+<body>
+    <script>
+        const p1 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject (1)
+            }, 300)
+        })
+
+        const p2 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(2)
+            }, 200)
+        })
+
+        const p3 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject(3)
+                // resolve(3)
+            }, 300)
+        })
+
+        const p4 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(4)
+            }, 400)
+        })
+        
+        Promise.resolve(p1)
+            .then((res) => {
+                console.log(res)
+            }, (err) => {
+                console.log(err)
+            })
+
+
+
+        // promise.all
+        // 全部成功时执行then,
+        // 有个一reject,执行catch,参数为第一个reject的返回值
+        // 没有异常，也没有正常resolve, reject时，会pending
+        Promise.all([ p2, p4])
+            .then((values) => { console.log('ss', ...values) })
+            .catch((error) => { console.log(error) })
+
+        
+        // promise.allSettled
+        // 无论成功与失败，等待所有的promise执行完成，返回一个promise的结果List
+        Promise.allSettled([p1, p2, p3, p4])
+            .then((values) => { values.forEach(it => console.log(it.status)) })
+
+        // Promise.race
+        // 一个待定的Promise, 采用第一个完成的Promise的值作为它的值（不论是resolve / rejecct）
+        // 若迭代值为空，则pending, 若同时有n个返回值，则取第一个
+        Promise.race([p1, p3])
+            .then((value) => { console.log(value) })
+            .catch((error) => { console.log(error) })
+
+
+
+        // Promise.any  (并未被多数浏览器支持,暂不介绍)
+        // 与promise.all相反，有一个resolve，则返回此值，当所以reject, catch
+
+        // Promise.any([p1, p3])
+        //     .then((values) => {console.log(values)})
+        //     .catch((err) => {console.log(err)})
+
+
+        // Promise.prototype.finally
+        // 在promise结束后执行finally, 不论是resolve, reject
+        // 不接受任何参数
+        Promise.race([p1, p3])
+            .then((value) => { console.log(value) })
+            .catch((error) => { console.log(error) })
+            .finally(() => { console.log('over') })
+
+
+        Promise.resolve(1)
+            .then((res) => { setTimeout(console.log(res), 1000) })
+            .catch((err) => { console.log(err) })
+            .finally(() => { console.log('over') })
+    </script>
+</body>
+</html>

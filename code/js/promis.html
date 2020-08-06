@@ -32,12 +32,12 @@
             }, 400)
         })
         
-        Promise.resolve(p1)
-            .then((res) => {
-                console.log(res)
-            }, (err) => {
-                console.log(err)
-            })
+        // Promise.resolve(p1)
+        //     .then((res) => {
+        //         console.log(res)
+        //     }, (err) => {
+        //         console.log(err)
+        //     })
 
 
 
@@ -45,22 +45,22 @@
         // 全部成功时执行then,
         // 有个一reject,执行catch,参数为第一个reject的返回值
         // 没有异常，也没有正常resolve, reject时，会pending
-        Promise.all([ p2, p4])
-            .then((values) => { console.log('ss', ...values) })
-            .catch((error) => { console.log(error) })
+        // Promise.all([ p2, p4])
+        //     .then((values) => { console.log('ss', ...values) })
+        //     .catch((error) => { console.log(error) })
 
         
         // promise.allSettled
         // 无论成功与失败，等待所有的promise执行完成，返回一个promise的结果List
-        Promise.allSettled([p1, p2, p3, p4])
-            .then((values) => { values.forEach(it => console.log(it.status)) })
+        // Promise.allSettled([p1, p2, p3, p4])
+        //     .then((values) => { values.forEach(it => console.log(it.status)) })
 
         // Promise.race
         // 一个待定的Promise, 采用第一个完成的Promise的值作为它的值（不论是resolve / rejecct）
         // 若迭代值为空，则pending, 若同时有n个返回值，则取第一个
-        Promise.race([p1, p3])
-            .then((value) => { console.log(value) })
-            .catch((error) => { console.log(error) })
+        // Promise.race([p1, p3])
+        //     .then((value) => { console.log(value) })
+        //     .catch((error) => { console.log(error) })
 
 
 
@@ -75,16 +75,62 @@
         // Promise.prototype.finally
         // 在promise结束后执行finally, 不论是resolve, reject
         // 不接受任何参数
-        Promise.race([p1, p3])
-            .then((value) => { console.log(value) })
-            .catch((error) => { console.log(error) })
-            .finally(() => { console.log('over') })
+        // Promise.race([p1, p3])
+        //     .then((value) => { console.log(value) })
+        //     .catch((error) => { console.log(error) })
+        //     .finally(() => { console.log('over') })
 
 
-        Promise.resolve(1)
-            .then((res) => { setTimeout(console.log(res), 1000) })
-            .catch((err) => { console.log(err) })
-            .finally(() => { console.log('over') })
+        // Promise.resolve(1)
+        //     .then((res) => { setTimeout(console.log(res), 1000) })
+        //     .catch((err) => { console.log(err) })
+        //     .finally(() => { console.log('over') })
+
+
+
+        // 实现promise
+
+        // 判断是否为Function
+        const isFunction = fns => typeof fns === 'function'
+
+        // 定义状态
+        const PENDING = 'PENDING'
+        const FULFILLED = 'FULFILLED'
+        const REJECTED = 'REJECTED'
+
+        // 实现promise类
+        class MyPromise {
+            constructor (handle) {
+                if (!isFunction(handle)) {
+                    throw new Error('handle must be function')
+                } else {
+                    this.status = PENDING
+                    this.value = undefined
+
+                    try {
+                        handle(this.resolve.bind(this), this.reject.bind(this))
+                    } catch (err) {
+                        this.reject(err)
+                    }
+                }
+            }
+
+            resolve (val) {
+                if (this.status !== PENDING) return
+                this.status = FULFILLED
+                this.value = val
+            }
+
+            reject (err) {
+                if (this.status !== PENDING) return
+                this.status = REJECTED
+                this.value = err
+            }
+        }
+
+        var b = new MyPromise((resolve) => {
+            resolve(1)
+        })
     </script>
 </body>
 </html>

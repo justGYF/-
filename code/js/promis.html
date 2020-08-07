@@ -106,7 +106,6 @@
                 } else {
                     this.status = PENDING
                     this.value = undefined
-
                     try {
                         handle(this.resolve.bind(this), this.reject.bind(this))
                     } catch (err) {
@@ -128,9 +127,10 @@
             }
         }
 
-        var b = new MyPromise((resolve) => {
+        var b = new MyPromise((resolve, reject) => {
             resolve(1)
         })
+        console.log(b)
     </script>
 </body>
 </html>

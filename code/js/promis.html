@@ -7,30 +7,30 @@
 </head>
 <body>
     <script>
-        const p1 = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                reject (1)
-            }, 300)
-        })
+        // const p1 = new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         reject (1)
+        //     }, 300)
+        // })
 
-        const p2 = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(2)
-            }, 200)
-        })
+        // const p2 = new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve(2)
+        //     }, 200)
+        // })
 
-        const p3 = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                reject(3)
-                // resolve(3)
-            }, 300)
-        })
+        // const p3 = new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         reject(3)
+        //         // resolve(3)
+        //     }, 300)
+        // })
 
-        const p4 = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(4)
-            }, 400)
-        })
+        // const p4 = new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve(4)
+        //     }, 400)
+        // })
         
         // Promise.resolve(p1)
         //     .then((res) => {
@@ -106,6 +106,11 @@
                 } else {
                     this.status = PENDING
                     this.value = undefined
+
+                    // 成功回调函数的队列
+                    this.resolveQueues = []
+                    // 失败回调函数的队列
+                    this.rejectQueues = []
                     try {
                         handle(this.resolve.bind(this), this.reject.bind(this))
                     } catch (err) {
@@ -116,8 +121,15 @@
 
             resolve (val) {
                 if (this.status !== PENDING) return
-                this.status = FULFILLED
-                this.value = val
+                const run = () => {
+                    this.status = FULFILLED
+                    this.value = val
+                    let cb
+                    while (cb = this.resolveQueues.shift()) {
+                        cb(val)
+                    }
+                }
+                setTimeout(() => run(), 0)
             }
 
             reject (err) {
@@ -125,12 +137,58 @@
                 this.status = REJECTED
                 this.value = err
             }
+
+
+            then (onFulfilled, onRejected) {
+                const { status, value } = this
+
+                return new MyPromise((onFulfilledNext, onRejectedNext) => {
+                    let fulfilled = value => {
+                        try {
+                            // then的参数非function,直接执行next
+                            if (!isFunction(onFulfilled)) {
+                                onFulfilledNext(value)
+                            } else {
+                                let res = onFulfilled(value)
+                                // then的参数执行返回值为promise, 继续执行then(状态非pending才执行)
+                                if (res instanceof MyPromise) {
+                                    res.then(onFulfilledNext, onRejectedNext)
+                                } else {
+                                    // then的参数执行返回值非promise， 直接执行
+                                    onFulfilledNext(value)
+                                }
+                            }
+                        } catch (err) {
+                            rejectNext(err)
+                        }
+                    }
+
+                    switch (status) {
+                        case PENDING:
+                            console.log(fulfilled)
+                            this.resolveQueues.push(fulfilled)
+                            this.rejectQueues.push(onRejected)
+                            break;
+                        case FULFILLED:
+                            onFulfilled(value)
+                            break;
+                        case REJECTED:
+                            onRejected(value)
+                            break;
+                        default: break;
+                    }
+                })
+            }
         }
 
         var b = new MyPromise((resolve, reject) => {
             resolve(1)
         })
-        console.log(b)
+        b.then(() => {
+            return new MyPromise((resolve) => {
+                setTimeout(() => { console.log(22); resolve(1) }, 1000)
+            })
+        }).then(() => { console.log(3) })
     </script>
 </body>
 </html>

@@ -13,7 +13,7 @@
 ## ES6 + +
 
 ## VUE
-
+4. [v-for不添加key的缺陷](./docs/vue/vforKey.md)
 ## HTTP
 
 ## WEBPACK + NPM

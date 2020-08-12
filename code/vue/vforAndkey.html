@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vfor中key的影响</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <list v-for="(it, index) in text" :text="it" @remove="remove" :key="index"></list>
+    </div>
+    <script>
+        Vue.component('list', {
+            template: `
+                <li>
+                    {{ text }}
+                    <input type="text" v-model="x" />
+                    <button @click="remove"> remove </button>    
+                </li>
+            `,
+            props: ['text'],
+            data () {
+                return {
+                    x: 'test'
+                }
+            },
+            methods: {
+                remove () {
+                    this.$emit('remove', this.text)
+                }
+            }
+        })
+        new Vue({
+            el: '#app',
+            data () {
+                return {
+                    text: [1,2,3]
+                }
+            },
+            methods: {
+                remove (val) {
+                    this.text.splice(val - 1, 1)
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>

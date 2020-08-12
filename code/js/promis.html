@@ -140,8 +140,8 @@
 
 
             then (onFulfilled, onRejected) {
-                const { status, value } = this
-
+                const { status } = this
+                
                 return new MyPromise((onFulfilledNext, onRejectedNext) => {
                     let fulfilled = value => {
                         try {
@@ -162,10 +162,8 @@
                             rejectNext(err)
                         }
                     }
-
                     switch (status) {
                         case PENDING:
-                            console.log(fulfilled)
                             this.resolveQueues.push(fulfilled)
                             this.rejectQueues.push(onRejected)
                             break;
@@ -184,11 +182,21 @@
         var b = new MyPromise((resolve, reject) => {
             resolve(1)
         })
+        // b.then(() => { console.log(3); return 5 }).then(() => {console.log(4)})
         b.then(() => {
             return new MyPromise((resolve) => {
-                setTimeout(() => { console.log(22); resolve(1) }, 1000)
+                setTimeout(()=>{resolve(2)}, 100)
             })
-        }).then(() => { console.log(3) })
+        }).then((val) => {
+            console.log(val)
+        })
+        .then(() => {
+            return new MyPromise((resolve) => {
+                setTimeout(()=>{resolve(5)}, 600)
+            })
+        }).then((val) => {
+            console.log(val)
+        })
     </script>
 </body>
 </html>

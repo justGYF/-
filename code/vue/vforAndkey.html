@@ -11,6 +11,22 @@
         <list v-for="(it, index) in text" :text="it" @remove="remove" :key="index"></list>
     </div>
     <script>
+        (() => {
+            console.log(1)
+            setTimeout(() => {
+                console.log(2)
+            }, 0)
+            console.log(3)
+        })();
+        (() => {
+            console.log(4)
+            setTimeout(() => {
+                console.log(5)
+            }, 0)
+            console.log(6)
+        })()
+    </script>
+    <script>
         Vue.component('list', {
             template: `
                 <li>

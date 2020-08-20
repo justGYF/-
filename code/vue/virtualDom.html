@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VirtualDom</title>
+</head>
+<body>
+    <script>
+        /**
+         * Element virdual-dom 对象定义
+         * @param {String} tagName - dom 元素名称
+         * @param {Object} props - dom 属性
+         * @param {Array<Element|String>} - 子节点
+         */
+        function Element(tagName, props, children) {
+            this.tagName = tagName
+            this.props = props
+            this.children = children
+            // dom 元素的 key 值，用作唯一标识符
+            if(props.key){
+            this.key = props.key
+            }
+            var count = 0
+            children.forEach(function (child, i) {
+                if (child instanceof Element) {
+                    count += child.count
+                } else {
+                    children[i] = '' + child
+                }
+                count++
+            })
+            // 子元素个数
+            this.count = count
+        }
+
+        function createElement(tagName, props, children){
+            return new Element(tagName, props, children);
+        }
+        var el = createElement
+        var ul = el('div',{id:'virtual-dom'},[
+        el('p',{},['Virtual DOM']),
+            el('ul', { id: 'list' }, [
+                el('li', { class: 'item' }, ['Item 1']),
+                el('li', { class: 'item' }, ['Item 2']),
+                el('li', { class: 'item' }, ['Item 3'])
+            ]),
+            el('div',{},['Hello World'])
+        ]) 
+        console.log(ul)
+
+
+        Element.prototype.render = function () {
+            var el = document.createElement(this.tagName)
+            for (var propsName in this.props) {
+                el.setAttribute(propsName, this.props[propsName])
+            }
+
+            var children = this.children || []
+            children.forEach(child => {
+                var childel = (child instanceof Element) ?
+                    child.render() :
+                    document.createTextNode(child)
+                el.appendChild(childel)
+            })
+            return el
+        }
+
+
+        var uls = ul.render()
+        document.body.appendChild(uls)
+    </script>
+</body>
+</html>

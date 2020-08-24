@@ -14,8 +14,10 @@
 ## ES6 + +
 
 ## VUE
-4. [v-for不添加key的缺陷](./docs/vue/vforKey.md)
+1. [v-for不添加key的缺陷](./docs/vue/vforKey.md)
+2. [生命周期简述](./docs/vue/lifeCircle.md)
 ## HTTP
+1. [缓存](./docs/http/cache.md)
 
 ## WEBPACK + NPM
 1. [webpack项目的简单建立和npm-link的使用](./docs/webpack/npmLink.md)

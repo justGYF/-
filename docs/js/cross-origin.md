@@ -16,6 +16,6 @@
 
 ### url # ...
 
-### websoclek
+### websocket
 
 ### 提交form表单

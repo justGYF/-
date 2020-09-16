@@ -11,6 +11,7 @@
 4. [Promise的使用及实现](./docs/js/promise.md)
 5. [跨域的几种方式简单介绍](./docs/js/cross-origin.md)
 6. [事件循环](./docs/js/eventloop.md)
+6. [继承](./docs/js/inherit.md)
 
 ## ES6 + +
 

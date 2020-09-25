@@ -11,3 +11,5 @@ const flatten = (arr) => {
 
 let newArr = flatten(arr)
 console.log(newArr)
+
+

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MessageChannel</title>
+</head>
+<body>
+    <script>
+        const channel = new MessageChannel()
+
+        const port1 = channel.port1
+        const port2 = channel.port2
+
+        port1.onmessage = (e) => {
+            console.log('message form port2:' + e.data)
+        }
+
+        port2.onmessage = (e) => {
+            console.log('message form port1:' + e.data)
+        }
+
+        port1.postMessage('it is port1 message')
+        port2.postMessage('it is port2 message')
+    </script>
+</body>
+</html>

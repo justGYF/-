@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fireWorkd</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #canvas {
+            width: 600px;
+            height: 400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas')
+        const ctx = canvas.getContext('2d')
+
+        canvas.width = canvas.clientWidth
+        canvas.height = canvas.clientHeight
+
+        const canvasClear = () => {
+            ctx.fillStyle = '#000000'
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
+        }
+
+        canvasClear()
+
+        // Point Object
+        /**
+         * 粒子特性：
+         * 2. 粒子颜色可控
+         * 3. 角度，弧度随机初始化后（固定），半径可变（移动） - 烟花
+         * 4. 角度，弧度每次刷新都变（散花模式）
+         * 5. 移动一定距离就消失
+        */
+
+        class Point {
+            constructor(x, y, radius, speed) {
+                this.x = x || 0
+                this.y = y || 0
+                this.radians = 0
+                this.radius = radius || 2
+                this.size = 2
+                this.speed = speed || 2
+
+                this.vx = 0
+                this.vy = 0
+                this.hue = 0
+                this.brightness = 0
+                this.alpha = 1
+
+                this.getFire()
+            }
+
+            setColor () {
+                // let hue = Math.floor(Math.random() * 51) + 150
+                // let hueVariance = 30
+
+                // this.hue = Math.floor(Math.random() * ((hue + hueVariance) - (hue - hueVariance))) + (hue - hueVariance);
+
+                this.hue = Math.floor(Math.random() * 360) + 1
+                this.brightness = Math.floor( Math.random() * 31 ) + 50;
+                this.alpha = ( Math.floor( Math.random() * 61) + 40 ) / 100;
+            }
+
+            setRad () {
+                let angle = Math.floor(Math.random() * 360)
+                this.radians = Math.PI / 180 * angle
+                this.radius = Math.floor(Math.random() * 10) + 10
+                this.size = Math.ceil(Math.random() * 3)
+            }
+
+            vInit () {
+                this.radius = this.speed
+                this.vx = this.vx + Math.ceil(this.x + Math.cos(this.radians) * this.radius)
+                this.vy = this.vy + Math.ceil(this.y + Math.sin(this.radians) * this.radius)
+            }
+
+            changeV (speed = null, type = null) {
+
+                if (type) {
+                    let angle = Math.floor(Math.random() * 360)
+                    this.radians = Math.PI / 180 * angle    
+                }
+                
+                if (speed) {
+                    this.radius += speed
+                } else {
+                    this.radius *= 1 - this.speed/100;
+                    this.alpha -= 0.005;
+                }
+                this.vx += Math.cos(this.radians) * this.radius
+                this.vy += Math.sin(this.radians) * this.radius + 0.4
+            }
+
+            getFire () {
+                this.setColor()
+                this.setRad()
+                this.changeV()
+                this.vInit()
+            }
+
+            getAlpha () {
+                return this.alpha
+            }
+        }
+
+        const draw = (list) => {
+
+            for(let i = 0; i < list.length; i++) {
+
+                let alpha = list[i].getAlpha()
+                
+                if (alpha <= 0.2) {
+                    list.splice(i, 1)
+                    continue
+                }
+
+                ctx.beginPath()
+
+                list[i].changeV()
+                ctx.arc(list[i].vx, list[i].vy, list[i].size, 0, Math.PI*2, false)
+
+                ctx.closePath();
+
+                ctx.fillStyle = `hsla(${list[i].hue}, 100%, ${list[i].brightness}%, ${list[i].alpha})`
+                ctx.fill();
+            }
+        }
+
+        const move = (x, y) => {
+            let list = Array.apply(null, { length: 100 }).map(it => {
+                let speed = (Math.random() * 5) + .4
+                let radius = 1
+                it = new Point(x, y, radius, speed)
+                return it
+            })
+            let rid
+            const tick = () => {
+                canvasClear()
+                
+                ctx.globalCompositeOperation = 'destination-out'
+                ctx.fillStyle = 'rgba(0,0,0,'+10/100+')'
+                ctx.fillRect(0, 0, canvas.width, canvas.height)
+                ctx.globalCompositeOperation = 'lighter'
+
+                draw(list)
+                rid = requestAnimationFrame(tick)
+
+                if (list.length === 0) {
+
+                    cancelAnimationFrame(rid);
+                    // canvas画布宽高改变就会清空画布
+                    canvas.width = canvas.width;
+                    canvasClear()
+                }
+            }
+            cancelAnimationFrame(rid)
+            tick()
+        }
+
+        canvas.addEventListener('click', (e) => {
+            canvasClear()
+            move(e.clientX, e.clientY)
+        })
+    </script>
+</body>
+</html>

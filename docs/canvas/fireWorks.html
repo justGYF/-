@@ -27,12 +27,96 @@
         canvas.width = canvas.clientWidth
         canvas.height = canvas.clientHeight
 
+        
+
+
+        // point River
+        class PointRiver {
+            constructor(w, h) {
+                this.w = w
+                this.h = w
+                this.x = 0
+                this.y = 0
+                this.speed = 2
+                this.alpha = 1
+                this.alphachange = Math.random()
+                this.size = 1
+                this.init()
+            }
+
+            getV () {
+                this.x += this.speed
+                this.alpha -= this.alphachange
+            }
+
+            init () {
+                this.color = '#ffffff'
+                this.x = Math.random() * this.w
+                this.y = Math.random() * this.h - 20
+                console.log(this.x, this.y)
+            }
+
+            getAlpha() {
+                return this.alpha
+            }
+        }
+
+        const drawRiver = (list) => {
+
+            for(let i = 0; i < list.length; i++) {
+
+                let alpha = list[i].getAlpha()
+                
+                if (alpha < 0.02) {
+                    list.splice(i, 1)
+                    list.push(new PointRiver(canvas.width, canvas.height))
+                    continue
+                }
+
+                ctx.beginPath()
+
+                list[i].getV()
+                ctx.arc(list[i].x, list[i].y, list[i].size, 0, Math.PI*2, false)
+
+                ctx.closePath();
+
+                ctx.fillStyle = `rgba(255, 255, 255, ${list[i].alpha})`
+                ctx.fill();
+            }
+        }
+
+
+        const moveRiver = (x, y) => {
+            let list = Array.apply(null, { length: 1000 }).map(it => {
+                it = new PointRiver(x, y)
+                return it
+            })
+            let rid
+            const tick = () => {
+                canvasClear()
+                drawRiver(list)
+                rid = requestAnimationFrame(tick)
+
+                if (list.length === 0) {
+                   
+                    cancelAnimationFrame(rid);
+                    // canvas画布宽高改变就会清空画布
+                    canvas.width = canvas.width;
+                    canvasClear()
+                }
+            }
+            cancelAnimationFrame(rid)
+            tick()
+        }
+
+
         const canvasClear = () => {
             ctx.fillStyle = '#000000'
             ctx.fillRect(0, 0, canvas.width, canvas.height)
         }
 
         canvasClear()
+        moveRiver(canvas.width, canvas.height)
 
         // Point Object
         /**
@@ -146,12 +230,11 @@
             })
             let rid
             const tick = () => {
-                canvasClear()
                 
-                ctx.globalCompositeOperation = 'destination-out'
-                ctx.fillStyle = 'rgba(0,0,0,'+10/100+')'
-                ctx.fillRect(0, 0, canvas.width, canvas.height)
-                ctx.globalCompositeOperation = 'lighter'
+                // ctx.globalCompositeOperation = 'destination-out'
+                // ctx.fillStyle = 'rgba(0,0,0,'+10/100+')'
+                // ctx.fillRect(0, 0, canvas.width, canvas.height)
+                // ctx.globalCompositeOperation = 'lighter'
 
                 draw(list)
                 rid = requestAnimationFrame(tick)

@@ -21,9 +21,9 @@
 
 //     /**
 //      * 拆解reduce --- a：累加器， b: 迭代item
-//      * a(b())
-//      * a(b(c(...arg)))
-//      * 
+//      * (...arg) => { a(b(...arg)) }
+//      * (...arg) => { a(b(c(...arg))) }
+//      * (...arg) => { a(b(c(d(...arg)))) }
 //     */
 // }
 
@@ -54,8 +54,12 @@ function b (x) {
     }, 2000)
     return x
 }
-function c (x, y) {
+function c (x) {
+    return x * 2
+}
+
+function d (x, y) {
     return x * y
 }
 
-console.log(compose(a, b, c)(9, 3))
+console.log(compose(a, b, c, d)(9, 3))

@@ -76,12 +76,15 @@ const isMatchBrackets = (str) => {
             stk.push(str[i])
         }
     }
+    // 循环完毕，如果栈中有值，则return false
     return !stk.length
 }
 
 
 console.log(isMatchBrackets('()[]{}'))   // true
+console.log(isMatchBrackets('('))   // false
 console.log(isMatchBrackets('(()[)]{}'))  // false
 console.log(isMatchBrackets('({}{{[()]}})[]{}'))  // true
 console.log(isMatchBrackets('({{{{}}'))  // false
 console.log(isMatchBrackets(')(({}}'))  // false
+

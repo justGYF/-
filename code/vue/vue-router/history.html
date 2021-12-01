@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>history router</title>
+</head>
+<body>
+    <ul>
+        <li>
+            <a href="/home">home</a>
+        </li>
+        <li>
+            <a href="/about">about</a>
+        </li>
+    </ul>
+
+    <div id="routeView"></div>
+
+    <script>
+        let routeView = document.getElementById('routeView')
+        const onload = () => {
+            routeView.innerHTML = location.pathname
+
+            let linkList = document.querySelectorAll('a[href]')
+
+            linkList.forEach(e => {
+                e.addEventListener('click', (el) => {
+                    // 阻止事件默认行为（取消popstate）
+                    el.preventDefault() 
+                    console.log(e.getAttribute('href'))
+
+                    history.pushState(null, '', e.getAttribute('href'))
+                    routeView.innerHTML = location.pathname
+                })
+            })
+
+        }
+
+        window.addEventListener('DOMContentLoaded', onload)
+
+        // popstate 会刷新页面
+        window.addEventListener('popstate', () => {
+            console.log('sss')
+            routeView.innerHTML = location.pathname
+        })
+
+    </script>
+</body>
+</html>

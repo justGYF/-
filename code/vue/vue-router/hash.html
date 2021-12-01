@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hash router</title>
+</head>
+<body>
+    <ul>
+        <li>
+            <a href="#/home">home</a>
+        </li>
+        <li>
+            <a href="#/about">about</a>
+        </li>
+    </ul>
+    <div id="routeView"></div>
+
+
+    <script>
+        let routeView = document.getElementById('routeView')
+
+        window.addEventListener('hashchange', () => {
+            routeView.innerHTML = location.hash
+        })
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // 页面dom加载完成，如果没有hash值，就重定向到 #/
+            // 如果有，就重定向到 hash url
+            if (!location.hash) {
+                location.hash = '#/'
+            } else {
+                routeView.innerHTML = location.hash
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>call, apply, bind</title>
-</head>
-<body>
-    <script>
+
         // call apply bind实现，obj值为null / undefined, undefined指向window
         // 注意函数的返回值
         Function.prototype.newCall = function () {
@@ -78,7 +70,3 @@
         var c = [4,5,6]
 
         var ss = a.bind(null, 3)
-
-    </script>
-</body>
-</html>

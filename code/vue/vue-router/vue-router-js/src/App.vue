@@ -7,6 +7,12 @@
         <li>
           <router-link to="/B">router B</router-link>
         </li>
+        <li>
+          <router-link to="/test1">test 1</router-link>
+        </li>
+        <li>
+          <router-link to="/test2">test 2</router-link>
+        </li>
       </ul>
 
       <router-view></router-view>

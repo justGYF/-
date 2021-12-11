@@ -1,10 +1,12 @@
-// import VueRouter from 'vue-router'
+import VueRouter from 'vue-router'
 import Vue from 'vue'
 
 
-import MyRouter from './myRouter.js'
+// import MyRouter from './myRouter.js'
+// Vue.use(MyRouter)
 
-Vue.use(MyRouter)
+
+Vue.use(VueRouter)
 
 import A from '../components/a.vue'
 import B from '../components/b.vue'
@@ -21,7 +23,7 @@ const routes = [
     }
 ]
 
-const router = new MyRouter({
+const router = new VueRouter({
     mode: 'history',
     routes
 })

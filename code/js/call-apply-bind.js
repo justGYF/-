@@ -7,7 +7,6 @@
             const handler = Symbol();
 
             obj[handler] = this
-
             const ret = obj[handler](...[...arguments].slice(1))
 
             delete obj[handler]

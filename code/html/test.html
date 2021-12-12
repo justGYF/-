@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .aa {
+            width: 300px;
+            height: 300px;
+            background: green;
+        }
+        .bb {
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+        .cc {
+            width: 100px;
+            height: 100px;
+            background: blue;
+        }
+    </style>
+</head>
+<body>
+    <div onclick="aa()" class="aa">
+        <div onclick="bb(event)" class="bb">
+            <div onclick="cc()" class="cc">
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const aa = () => {
+            alert(1)
+        }
+        const bb = (event) => {
+            if (event.target.className !== 'bb') {
+                return 
+            } else {
+                alert(2)
+            }
+        }
+        const cc = () => {
+            alert(3)
+        }
+    </script>
+</body>
+</html>

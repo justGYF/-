@@ -2,7 +2,7 @@
 
 ## 生命周期流程 
 1. new Vue() 创建vue实例
-2. observeDate -- 对data的数据进行监测
+2. observeData -- 对data的数据进行监测
 3. Init Events -- 内部初始化事件
 4. Has 'el' option -- 判断是否有el, 有则继续生命周期，否则就中断生命周期，等待 vm.$mount(el) is called
 5. Has 'tempalte' option -- 上一步没有中断，则在此判断

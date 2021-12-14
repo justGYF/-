@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hash router</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #test {
+            width: 300px;
+            height: 300px;
+            background: red;
+            margin-left: 100px;
+        }
+        #testSon {
+            width: 100px;
+            height: 100px;
+            background: green;
+            float: left;
+        }
+        .s {
+            width: 300px;
+            height: 300px;
+            background: red;
+            margin: 100px 0 0 100px;
+        }
+        .a {
+            width: 100px;
+            height: 100px;
+            background: green;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .b {
+            width: 100px;
+            height: 100px;
+            background: blue;
+            display: inline-block;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- dom的click，绑定方法的this指向函数定义时的作用域，不会指向dom节点 -->
+    <div id="test" onclick="a.aa()">
+        <div id="testSon"></div>
+    </div>
+
+    <!-- 水平方向不会发生margin重叠, inline-block会以行内元素排版 -->
+    <div class="s">
+        <div class="a"></div><div class="b"></div>
+    </div>
+
+
+    <script>
+        var a = {
+            aa: function() {
+                console.log(this)
+            }
+        }
+    </script>
+</body>
+</html>

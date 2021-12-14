@@ -37,3 +37,13 @@
 3. **不同域的cookie不共享**，C不可以直接读取A的cookie,所以约定的token值可以放在cookie中，这样即使C知道A的token规则，也无法拿到具体的值
 4. **要读取cookie，就不可以设置http-only**, 与xss防范冲突，需要具体场景具体分析
 
+
+### JWT： Json Web Token
+1. 客户端存储的身份验证信息
+2. 登录成功后，后端返回加密信息(message)，前端在之后的每次请求在请求头添加此信息，常用做法
+   
+```
+    Authorization: bearer message 
+```
+3. jwt = Header + Payload + signature
+

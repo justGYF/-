@@ -44,3 +44,9 @@ console.log(a)
 // }
 // let go = aa()
 // console.log(go()('d'))
+
+
+
+
+
+

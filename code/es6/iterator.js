@@ -41,8 +41,25 @@ let obj = {
             }
         }
     }
+}
+// for (let a of obj) {
+//     console.log(a)
+// }
 
+// Generator 函数是 ES6 提供的一种异步编程解决方案
+function* aa() {
+    yield new Promise((resolve) => {
+        console.log('1')
+        setTimeout(() => {
+            resolve('3')
+        }, 1000)
+    })
+    yield console.log('2')
 }
-for (let a of obj) {
-    console.log(a)
-}
+var s = aa()
+var a = s.next()
+a.value.then((res) => {
+    console.log(res)
+
+})
+s.next()
